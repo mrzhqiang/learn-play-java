@@ -1,0 +1,14 @@
+@(title: String, request: Http.RequestHeader)
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>@title</title>
+  </head>
+  <body>
+    Hello, HTML!
+    <br/>
+    <a href="@routes.Relative.hello(title)">Absolute Link</a>
+    <a href="@routes.Relative.hello(title).relativeTo(request)">Relative Link</a>
+  </body>
+</html>

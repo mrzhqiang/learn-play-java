@@ -1,0 +1,111 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET         /                                 controllers.HomeController.index
+
+# Test custom routes and controller method
+GET         /action/request                   controllers.ActionController.req
+
+# Random call Results's static method
+GET         /action/other                     controllers.ActionController.other
+
+# Call Reuslts's static method by id
+GET         /action/other/:r                  controllers.ActionController.otherByCode(r:Int)
+
+# Dynamic parts spanning several /
+GET         /routing/download/*name           controllers.RoutingController.download(name)
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                     controllers.Assets.versioned(path="/public", file: Asset)
+
+# Dynamic parts with custom regular expressions
+GET         /routing/items/$id<[0-9]+>        controllers.RoutingController.items(id: Long)
+
+# Call to action generator method
+GET         /routing/show/                    controllers.RoutingController.show(page = "Home")
+
+# Parameters with fixed values
+GET         /routing/show/:page               controllers.RoutingController.show(page)
+
+# Parameters with default values
+GET         /routing/clients                  controllers.RoutingController.clients(page: Int ?= 1)
+
+# Optional parameters
+GET         /routing/list-all                 controllers.RoutingController.list(version ?= "")
+GET         /routing/index                    controllers.RoutingController.index
+
+# Relative routes
+GET         /relative/hello                   controllers.Relative.helloview
+GET         /relative/:name                   controllers.Relative.hello(name)
+
+# The Default Controller
+GET         /default/about                    controllers.Default.redirect(to = "http://haowanba.com")
+
+# Changing the default Content-Type
+GET         /response/text                    controllers.ResponseController.contentText
+GET         /response/json                    controllers.ResponseController.contentJson
+GET         /response/change                  controllers.ResponseController.contentOf
+
+# Setting HTTP response headers
+GET         /response/headers                 controllers.ResponseController.settingHeader
+
+# Setting and discarding cookies
+GET         /response/cookie                  controllers.ResponseController.cookieOf
+
+# Specifying the character encoding for text results
+GET         /response/character               controllers.ResponseController.characterOf
+
+# How it is different in Play
+# If you have to keep data across multiple HTTP requests,
+# you can save them in the Session or the Flash scope.
+# Data stored in the Session are available during the whole user session,
+# and data stored in the flash scope are only available to the next request.
+
+# Session 用户会话期间有效
+# Flash 仅用于下一次请求
+
+# Storing data into the Session
+GET         /session/login                    controllers.SessionController.login
+GET         /session/logout                   controllers.SessionController.logout
+
+# Reading a Session value
+GET         /session/reading                  controllers.SessionController.readSession
+
+# Discarding the whole session
+GET         /session/discarding               controllers.SessionController.discardSession
+
+# Flash scope
+GET         /session/flash                    controllers.SessionController.flashScope
+GET         /session/flashIndex               controllers.SessionController.flashIndex
+GET         /session/flashScala               controllers.SessionController.flashScala
+
+# The default body parser
+POST        /body/request                     controllers.BodyController.checkRequest
+
+# Choosing an explicit body parser
+POST        /body/parser                      controllers.BodyController.checkParser
+
+# Writing a custom body parser
+POST        /body/user                        controllers.BodyController.save
+
+# Writing a custom max length body parser
+POST        /body/length                      controllers.BodyController.index
+
+# Directing the body elsewhere
+# 这部分缺少代码，因此无法实现
+
+# Custom parsing using Akka Streams
+# 这部分也只是照抄，没有一个合适的地方去应用，或者是自己还不懂怎么用
+
+# Defining custom action annotations
+GET         /action/verboseAnno               controllers.ActionController.verboseAnnotationIndex
+
+# Passing objects from action to controller
+GET         /action/pass                      controllers.ActionController.passArgIndex
+
+## Action composition
+# Composing actions
+GET         /action/verbose                   controllers.ActionController.verboseIndex
+GET         /action/authenticated             controllers.ActionController.authenticatedCachedIndex

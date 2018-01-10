@@ -1,0 +1,10 @@
+@(flash: Http.Flash)
+
+@main("Flash Scala") {
+  <h1>HAHAHA</h1>
+  @if(flash.containsKey("success")) {
+    @flash.get("success")
+  } else {
+    Welcome!
+  }
+}
