@@ -5,6 +5,11 @@
 # An example controller showing a sample home page
 GET         /                                 controllers.HomeController.index
 
+# Test Database
+GET         /accounts                         controllers.AccountController.accountList
+
+GET         /account/:id                      controllers.AccountController.addAccount(id:Int)
+
 # Test custom routes and controller method
 GET         /action/request                   controllers.ActionController.req
 
