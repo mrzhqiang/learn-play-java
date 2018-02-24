@@ -1,5 +1,6 @@
 package controllers;
 
+import models.APIKey;
 import play.mvc.*;
 
 /**
@@ -16,6 +17,10 @@ public class HomeController extends Controller {
    * <code>GET</code> request with a path of <code>/</code>.
    */
   public Result index() {
-    return ok(views.html.index.render());
+    APIKey apiKey = new APIKey();
+    apiKey.id = (long) (Math.random() * 10000);
+    apiKey.name = String.valueOf(Math.random() * 1000);
+    apiKey.save();
+    return ok(apiKey.toString());
   }
 }

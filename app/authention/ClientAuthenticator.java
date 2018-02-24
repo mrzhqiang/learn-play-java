@@ -1,6 +1,8 @@
 package authention;
 
+import java.util.List;
 import java.util.Optional;
+import models.APIKey;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -21,7 +23,8 @@ public class ClientAuthenticator extends Security.Authenticator {
     Optional<String> authOptional = ctx.request().header(Http.HeaderNames.AUTHORIZATION);
     if (authOptional.isPresent()) {
       String authorization = authOptional.get();
-
+      List<APIKey> apiKeyList = APIKey.find.all();
+      // TODO
     }
     return null;
   }
