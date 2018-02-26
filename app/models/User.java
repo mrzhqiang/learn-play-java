@@ -1,11 +1,20 @@
 package models;
 
+import io.ebean.Model;
+import io.ebean.annotation.NotNull;
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class User {
-  private Long id;
-  private String name;
+@Entity
+@Table(name = "user")
+public class User extends Model {
+  @Id
+  public long id;
+  @NotNull
+  public String name;
 
   private static final Map<Long, User> USER_POOL = new HashMap<>();
 

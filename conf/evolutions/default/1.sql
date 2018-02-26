@@ -3,12 +3,14 @@
 
 # --- !Ups
 
-create table api_key (
+create table client (
   id                            bigint auto_increment not null,
-  name                          varchar(255),
-  created                       datetime(6),
-  updated                       datetime(6),
-  constraint pk_api_key primary key (id)
+  name                          varchar(32) not null,
+  apikey                        varchar(40) not null,
+  description                   varchar(255),
+  created                       datetime(6) not null,
+  updated                       datetime(6) not null,
+  constraint pk_client primary key (id)
 );
 
 create table account (
@@ -22,7 +24,7 @@ create table account (
 
 # --- !Downs
 
-drop table if exists api_key;
+drop table if exists client;
 
 drop table if exists account;
 
