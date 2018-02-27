@@ -1,6 +1,5 @@
 package controllers;
 
-import models.Page;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -23,8 +22,7 @@ public class RoutingController extends Controller {
   }
 
   public Result show(String page) {
-    String content = Page.getContentOf(page);
-    return ok(content).as("text/html");
+    return ok().as("text/html");
   }
 
   public Result items(Long id) {

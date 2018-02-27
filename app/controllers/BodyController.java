@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 import javax.inject.Inject;
-import models.User;
-import parsers.UserBodyParser;
 import play.http.HttpErrorHandler;
 import play.libs.F;
 import play.libs.streams.Accumulator;
@@ -66,11 +64,9 @@ public class BodyController extends Controller {
     }
   }
 
-  @BodyParser.Of(UserBodyParser.class)
   public Result save() {
     Http.RequestBody body = request().body();
-    User user = body.as(User.class);
-    return ok("Got name: " + user.getName());
+    return ok("Got name: " + body.asText());
   }
 
   @BodyParser.Of(BodyParser.Text.class)

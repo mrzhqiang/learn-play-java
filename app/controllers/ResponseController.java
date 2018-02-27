@@ -2,7 +2,6 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.time.Duration;
-import models.Person;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -43,9 +42,7 @@ public class ResponseController extends Controller {
 
   public Result contentJson() {
     // default content-type is application/json
-    Person person = Person.of("欢乐多", "法师");
-    JsonNode json = Json.toJson(person);
-    return ok(json);
+    return ok();
   }
 
   public Result contentText() {

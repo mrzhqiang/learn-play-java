@@ -8,7 +8,9 @@ GET         /                                 controllers.HomeController.index
 # Test Database
 GET         /accounts                         controllers.AccountController.accountList
 
-GET         /account/:id                      controllers.AccountController.addAccount(id:Int)
+GET         /account/:userId                  controllers.AccountController.addAccount(userId:Int)
+
+POST        /account/register                 controllers.AccountController.register
 
 # Test custom routes and controller method
 GET         /action/request                   controllers.ActionController.req

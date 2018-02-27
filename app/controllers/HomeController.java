@@ -1,7 +1,6 @@
 package controllers;
 
-//import java.util.UUID;
-//import models.Client;
+import models.Client;
 import play.mvc.*;
 
 /**
@@ -17,11 +16,10 @@ public class HomeController extends Controller {
    * <code>GET</code> request with a path of <code>/</code>.
    */
   public Result index() {
-    //Client client = new Client();
-    //client.name = "Android";
-    //client.apikey = UUID.randomUUID();
-    //client.description = "这是安卓客户端的通用APIKey";
-    //client.save();
-    return ok(/*client.toString()*/);
+    Client client = new Client();
+    client.name = "Android";
+    client.description = "这是安卓客户端的通用APIKey";
+    client.save();
+    return ok(client.toString());
   }
 }
