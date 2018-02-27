@@ -3,7 +3,7 @@ package models;
 import io.ebean.Finder;
 import io.ebean.annotation.EnumValue;
 import io.ebean.annotation.NotNull;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -30,7 +30,7 @@ public class User extends BaseModel {
   @Size(max = 3)
   public int age;
   @Formats.DateTime(pattern = "yyyy-MM-dd")
-  public Date birthday;
+  public Timestamp birthday;
   @Size(max = 6)
   public String blood;
   @Size(max = 32)

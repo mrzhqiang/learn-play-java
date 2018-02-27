@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 import models.Account;
 import models.User;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import util.Accounts;
@@ -12,7 +13,11 @@ public class AccountController extends Controller {
 
   public Result register() {
     JsonNode jsonNode = request().body().asJson();
-    return play.mvc.Results.TODO;
+    User user = Json.fromJson(jsonNode, User.class);
+    user.save();
+    Account account = Accounts.randomOf(user);
+    account.save();
+    return created(account.toString());
   }
 
   public Result accountList() {
