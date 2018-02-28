@@ -45,8 +45,6 @@ public class User extends BaseModel {
   public String phone;
   @Size(max = 128)
   public String email;
-  @Size(max = 140)
-  public String signature;
   @Size(max = 200)
   public String description;
 
@@ -65,14 +63,13 @@ public class User extends BaseModel {
         .add("company", company)
         .add("phone", phone)
         .add("email", email)
-        .add("signature", signature)
         .add("description", description)
         .toString();
   }
 
   @Override public int hashCode() {
     return Objects.hash(super.hashCode(), nickname, sex, age, birthday, blood
-        , profession, location, school, company, phone, email, signature, description);
+        , profession, location, school, company, phone, email, description);
   }
 
   @Override public boolean equals(Object obj) {
@@ -97,7 +94,6 @@ public class User extends BaseModel {
         && Objects.equals(company, other.company)
         && Objects.equals(phone, other.phone)
         && Objects.equals(email, other.email)
-        && Objects.equals(signature, other.signature)
         && Objects.equals(description, other.description);
   }
 }

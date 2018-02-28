@@ -18,7 +18,7 @@ public class Account extends BaseModel {
   @Size(min = 6, max = 16)
   public String password;
   public int level = 1;
-  @ManyToOne(optional = false)
+  @ManyToOne
   public User user;
 
   public static final Finder<Long, Account> find = new Finder<>(Account.class);

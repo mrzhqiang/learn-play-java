@@ -21,7 +21,7 @@ public class AccountController extends Controller {
   }
 
   public Result accountList() {
-    List<Account> result = Account.find.all();
+    List<User> result = User.find.all();
     return ok("Add successful: " + result);
   }
 
