@@ -1,6 +1,5 @@
 package models;
 
-import io.ebean.Finder;
 import io.ebean.annotation.EnumValue;
 import io.ebean.annotation.NotNull;
 import java.sql.Timestamp;
@@ -28,7 +27,6 @@ public class User extends BaseModel {
   public String nickname;
   @NotNull
   public Sex sex = Sex.MALE;
-  @Size(max = 3)
   public int age;
   @Formats.DateTime(pattern = "yyyy-MM-dd")
   public Timestamp birthday;
@@ -52,8 +50,6 @@ public class User extends BaseModel {
   @NotNull
   @ManyToOne
   public Client client;
-
-  public static final Finder<Long, User> find = new Finder<>(User.class);
 
   @Override public String toString() {
     return baseStringHelper()

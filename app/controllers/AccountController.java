@@ -15,7 +15,7 @@ public class AccountController extends Controller {
     JsonNode jsonNode = request().body().asJson();
     User user = Json.fromJson(jsonNode, User.class);
     user.save();
-    Account account = Accounts.randomOf(user);
+    Account account = Accounts.as(user);
     account.save();
     return created(account.toString());
   }
@@ -30,7 +30,7 @@ public class AccountController extends Controller {
     if (user == null) {
       return notFound();
     }
-    Account account = Accounts.randomOf(user);
+    Account account = Accounts.as(user);
     account.insert();
     return ok(account.toString());
   }
