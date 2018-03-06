@@ -4,7 +4,7 @@ import io.ebean.Finder;
 import io.ebean.annotation.NotNull;
 import java.util.Objects;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -18,22 +18,21 @@ public class Account extends BaseModel {
   @Size(min = 6, max = 16)
   public String password;
   public int level = 1;
-  @ManyToOne
-  public User user;
+  @OneToOne
+  public Token token;
 
-  public static final Finder<Long, Account> find = new Finder<>(Account.class);
 
   @Override public String toString() {
     return baseStringHelper()
         .add("number", number)
         .add("password", password)
         .add("level", level)
-        .add("user", user)
+        .add("token", token)
         .toString();
   }
 
   @Override public int hashCode() {
-    return Objects.hash(super.hashCode(), number, password, level, user);
+    return Objects.hash(super.hashCode(), number, password, level, token);
   }
 
   @Override public boolean equals(Object obj) {
@@ -50,6 +49,6 @@ public class Account extends BaseModel {
         && Objects.equals(number, other.number)
         && Objects.equals(password, other.password)
         && Objects.equals(level, other.level)
-        && Objects.equals(user, other.user);
+        && Objects.equals(token, other.token);
   }
 }

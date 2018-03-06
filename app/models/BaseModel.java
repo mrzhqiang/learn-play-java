@@ -19,18 +19,18 @@ abstract class BaseModel extends Model {
   @WhenCreated
   Timestamp created;
   @WhenModified
-  Timestamp updated;
+  Timestamp modified;
 
   MoreObjects.ToStringHelper baseStringHelper() {
     return MoreObjects.toStringHelper(this)
         .add("id", id)
         .add("version", version)
         .add("created", created)
-        .add("updated", updated);
+        .add("modified", modified);
   }
 
   @Override public int hashCode() {
-    return Objects.hash(id, version, created, updated);
+    return Objects.hash(id, version, created, modified);
   }
 
   @Override public boolean equals(Object obj) {
@@ -46,6 +46,6 @@ abstract class BaseModel extends Model {
     return Objects.equals(id, other.id)
         && Objects.equals(version, other.version)
         && Objects.equals(created, other.created)
-        && Objects.equals(updated, other.updated);
+        && Objects.equals(modified, other.modified);
   }
 }

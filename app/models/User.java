@@ -6,6 +6,7 @@ import io.ebean.annotation.NotNull;
 import java.sql.Timestamp;
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import play.data.format.Formats;
@@ -47,6 +48,10 @@ public class User extends BaseModel {
   public String email;
   @Size(max = 200)
   public String description;
+
+  @NotNull
+  @ManyToOne
+  public Client client;
 
   public static final Finder<Long, User> find = new Finder<>(User.class);
 

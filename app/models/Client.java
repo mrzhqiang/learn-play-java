@@ -1,9 +1,9 @@
 package models;
 
-import io.ebean.Finder;
 import io.ebean.annotation.NotNull;
 import java.util.Objects;
 import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -13,23 +13,23 @@ import javax.validation.constraints.Size;
 public class Client extends BaseModel {
   @NotNull
   @Size(max = 32)
-  public String name;
+  @Column(unique = true)
+  public String username;
   @NotNull
-  public UUID apikey = UUID.randomUUID();
+  @Column(unique = true)
+  public UUID password;
   public String description;
-
-  public static final Finder<Long, Client> find = new Finder<>(Client.class);
 
   @Override public String toString() {
     return baseStringHelper()
-        .add("name", name)
-        .add("apikey", apikey)
+        .add("name", username)
+        .add("password", password)
         .add("description", description)
         .toString();
   }
 
   @Override public int hashCode() {
-    return Objects.hash(super.hashCode(), name, apikey, description);
+    return Objects.hash(super.hashCode(), username, password, description);
   }
 
   @Override public boolean equals(Object obj) {
@@ -43,8 +43,8 @@ public class Client extends BaseModel {
 
     Client other = (Client) obj;
     return super.equals(obj)
-        && Objects.equals(name, other.name)
-        && Objects.equals(apikey, other.apikey)
+        && Objects.equals(username, other.username)
+        && Objects.equals(password, other.password)
         && Objects.equals(description, other.description);
   }
 }
