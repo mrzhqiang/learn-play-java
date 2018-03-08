@@ -1,11 +1,12 @@
 package models;
 
+import io.ebean.Finder;
 import io.ebean.annotation.EnumValue;
 import io.ebean.annotation.NotNull;
 import java.sql.Timestamp;
 import java.util.Objects;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import play.data.format.Formats;
@@ -13,6 +14,7 @@ import play.data.format.Formats;
 @Entity
 @Table(name = "user")
 public class User extends BaseModel {
+  public static final Finder<Long, User> find = new Finder<>(User.class);
 
   public enum Sex {
     @EnumValue("M")
@@ -48,8 +50,8 @@ public class User extends BaseModel {
   public String description;
 
   @NotNull
-  @ManyToOne
-  public Client client;
+  @OneToOne
+  public Account account;
 
   @Override public String toString() {
     return baseStringHelper()
@@ -65,12 +67,13 @@ public class User extends BaseModel {
         .add("phone", phone)
         .add("email", email)
         .add("description", description)
+        .add("account", account)
         .toString();
   }
 
   @Override public int hashCode() {
     return Objects.hash(super.hashCode(), nickname, sex, age, birthday, blood
-        , profession, location, school, company, phone, email, description);
+        , profession, location, school, company, phone, email, description, account);
   }
 
   @Override public boolean equals(Object obj) {
@@ -95,6 +98,7 @@ public class User extends BaseModel {
         && Objects.equals(company, other.company)
         && Objects.equals(phone, other.phone)
         && Objects.equals(email, other.email)
-        && Objects.equals(description, other.description);
+        && Objects.equals(description, other.description)
+        && Objects.equals(account, other.account);
   }
 }

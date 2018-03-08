@@ -7,7 +7,6 @@ import models.User;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import util.Accounts;
 
 public class AccountController extends Controller {
 

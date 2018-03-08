@@ -6,7 +6,6 @@ import models.Client;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
-import util.Clients;
 
 /**
  * 客户端权限校验器。
@@ -29,7 +28,7 @@ public class ClientAuthenticator extends Security.Authenticator {
           String auth = new String(Base64.getDecoder().decode(authEncode), "UTF-8");
           // Basic是通过 username:password 的方式做权限认证
           String[] authSplit = auth.split(":", 2);
-          Optional<Client> clientOptional = Clients.find(authSplit[0], authSplit[1]);
+          Optional<Client> clientOptional = Clients.verify(authSplit[0], authSplit[1]);
           if (clientOptional.isPresent()) {
             // 这里返回任何不为null的字符串都行，返回username主要是为了方便查询
             return clientOptional.get().username;
