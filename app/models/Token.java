@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class Token extends BaseModel {
   private static final long TOKEN_EXPIRES_IN = TimeUnit.DAYS.toSeconds(30);
 
-  public static Token of(@Nonnull User user) {
+  public static Token of(@Nonnull Account account) {
     Token token = new Token();
     //token.user = user;
     //token.accessToken = accessTokenOf(user.client);

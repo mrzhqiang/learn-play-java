@@ -2,56 +2,48 @@ package models;
 
 import io.ebean.Finder;
 import io.ebean.annotation.EnumValue;
-import io.ebean.annotation.NotNull;
 import java.sql.Timestamp;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import play.data.format.Formats;
 
 @Entity
 @Table(name = "user")
 public class User extends BaseModel {
-  public static final Finder<Long, User> find = new Finder<>(User.class);
 
   public enum Sex {
     @EnumValue("M")
     MALE,
     @EnumValue("F")
-    FEMALE,
-    @EnumValue("O")
-    OTHER
+    FEMALE
   }
 
-  @Size(max = 24)
+  @Column(nullable = false, length = 16)
   public String nickname;
-  @NotNull
+  @Column(nullable = false)
   public Sex sex = Sex.MALE;
   public int age;
   @Formats.DateTime(pattern = "yyyy-MM-dd")
   public Timestamp birthday;
-  @Size(max = 6)
+  @Column(length = 16)
   public String blood;
-  @Size(max = 32)
+  @Column(length = 16)
   public String profession;
-  @Size(max = 128)
   public String location;
-  @Size(max = 32)
+  @Column(length = 32)
   public String school;
-  @Size(max = 32)
+  @Column(length = 32)
   public String company;
-  @Size(max = 24)
+  @Column(length = 11)
   public String phone;
-  @Size(max = 128)
+  @Column(length = 64)
   public String email;
-  @Size(max = 200)
+  @Column(length = 128)
   public String description;
 
-  @NotNull
-  @OneToOne
-  public Account account;
+  public static final Finder<Long, User> find = new Finder<>(User.class);
 
   @Override public String toString() {
     return baseStringHelper()
@@ -67,13 +59,12 @@ public class User extends BaseModel {
         .add("phone", phone)
         .add("email", email)
         .add("description", description)
-        .add("account", account)
         .toString();
   }
 
   @Override public int hashCode() {
-    return Objects.hash(super.hashCode(), nickname, sex, age, birthday, blood
-        , profession, location, school, company, phone, email, description, account);
+    return Objects.hash(super.hashCode(), nickname, sex, age, birthday, blood, profession,
+        location, school, company, phone, email, description);
   }
 
   @Override public boolean equals(Object obj) {
@@ -98,7 +89,6 @@ public class User extends BaseModel {
         && Objects.equals(company, other.company)
         && Objects.equals(phone, other.phone)
         && Objects.equals(email, other.email)
-        && Objects.equals(description, other.description)
-        && Objects.equals(account, other.account);
+        && Objects.equals(description, other.description);
   }
 }

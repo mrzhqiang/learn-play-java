@@ -9,11 +9,18 @@ import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
+/** 客户端，表示访问入口api接口的授权，后台有收回访问权限的可能 */
 @Entity
 @Table(name = "client")
 public class Client extends BaseModel {
+
+  @Column(unique = true, nullable = false)
+  public String name;
+  @Column(unique = true, nullable = false)
+  public UUID apikey;
+  public String description;
+
   public static final Finder<Long, Client> find = new Finder<>(Client.class);
 
   @Nonnull
@@ -24,38 +31,46 @@ public class Client extends BaseModel {
   @Nonnull
   public static Client of(@Nonnull String name, @Nullable String description) {
     Client client = new Client();
-    client.username = name;
-    client.password = UUID.randomUUID();
+    client.name = name;
+    client.apikey = generateApikey();
     client.description = description;
     return client;
   }
 
   public static boolean verify(@Nonnull String username, @Nonnull String password) {
-    Optional<Client> clientOptional = find.query().where()
-        .eq("username", username)
-        .eq("password", password)
-        .findOneOrEmpty();
-    return clientOptional.isPresent();
+    try {
+      Optional<Client> clientOptional = find.query().where()
+          .eq("name", username)
+          .eq("apikey", password)
+          .findOneOrEmpty();
+      return clientOptional.isPresent();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return false;
   }
 
-  @NotNull
-  @Column(unique = true)
-  public String username;
-  @NotNull
-  @Column(unique = true)
-  public UUID password;
-  public String description;
+  private static UUID generateApikey() {
+    UUID randomUUID = UUID.randomUUID();
+    Optional<Client> clientOptional =
+        find.query().where().eq("apikey", randomUUID.toString()).findOneOrEmpty();
+    if (!clientOptional.isPresent()) {
+      return randomUUID;
+    }
+    // 必须找到一个不重复的UUID，以保证apikey的唯一性
+    return generateApikey();
+  }
 
   @Override public String toString() {
     return baseStringHelper()
-        .add("name", username)
-        .add("password", password)
+        .add("name", name)
+        .add("apikey", apikey)
         .add("description", description)
         .toString();
   }
 
   @Override public int hashCode() {
-    return Objects.hash(super.hashCode(), username, password, description);
+    return Objects.hash(super.hashCode(), name, apikey, description);
   }
 
   @Override public boolean equals(Object obj) {
@@ -69,8 +84,8 @@ public class Client extends BaseModel {
 
     Client other = (Client) obj;
     return super.equals(obj)
-        && Objects.equals(username, other.username)
-        && Objects.equals(password, other.password)
+        && Objects.equals(name, other.name)
+        && Objects.equals(apikey, other.apikey)
         && Objects.equals(description, other.description);
   }
 }
