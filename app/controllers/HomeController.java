@@ -11,7 +11,6 @@ import play.mvc.*;
  * @see Security.Authenticator 默认的权限认证器，用来保持登陆状态
  * @see ClientAuthenticator 客户端级别的权限认证器，用来简单地防止接口盗用
  */
-@Security.Authenticated(value = ClientAuthenticator.class)
 public class HomeController extends Controller {
 
   /*这里只是测试用的方法，未来将删除它*/
