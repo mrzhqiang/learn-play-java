@@ -15,8 +15,6 @@ GET         /clients                          controllers.ClientController.getCl
 # Test Database
 GET         /accounts                         controllers.AccountController.accountList
 
-GET         /account/:userId                  controllers.AccountController.addAccount(userId:Int)
-
 POST        /account/register                 controllers.AccountController.register
 
 # Test custom routes and controller method
@@ -77,8 +75,8 @@ GET         /response/character               controllers.ResponseController.cha
 # Data stored in the Session are available during the whole user session,
 # and data stored in the flash scope are only available to the next request.
 
-# Session 用户会话期间有效
-# Flash 仅用于下一次请求
+# Session
+# Flash
 
 # Storing data into the Session
 GET         /session/login                    controllers.SessionController.login
@@ -108,10 +106,8 @@ POST        /body/user                        controllers.BodyController.save
 POST        /body/length                      controllers.BodyController.index
 
 # Directing the body elsewhere
-# 这部分缺少代码，因此无法实现
 
 # Custom parsing using Akka Streams
-# 这部分也只是照抄，没有一个合适的地方去应用，或者是自己还不懂怎么用
 
 # Defining custom action annotations
 GET         /action/verboseAnno               controllers.ActionController.verboseAnnotationIndex

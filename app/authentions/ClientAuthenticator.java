@@ -2,10 +2,9 @@ package authentions;
 
 import java.util.Base64;
 import java.util.Optional;
-import models.Client;
 import play.mvc.Http;
 import play.mvc.Result;
-import play.mvc.Security;
+import utils.Clients;
 
 /**
  * 客户端权限校验器。
@@ -14,24 +13,33 @@ import play.mvc.Security;
  *
  * @author mrZQ
  */
-public class ClientAuthenticator extends Security.Authenticator {
+public class ClientAuthenticator extends UserAuthenticator {
   private static final String BASIC = "Basic ";
 
   @Override public String getUsername(Http.Context ctx) {
+    // 首先尝试一下用户权限，如果通过，那么直接通过
+    String userAuth = super.getUsername(ctx);
+    if (userAuth != null) {
+      return userAuth;
+    }
     try {
-      Optional<String> authorization = ctx.request().header(Http.HeaderNames.AUTHORIZATION);
-      if (authorization.isPresent()) {
-        String basicAuth = authorization.get();
-        if (basicAuth.startsWith(BASIC)) {
-          String authEncode = basicAuth.replaceFirst(BASIC, "");
-          // 使用Java8新增的Base64解码器解码，注意UTF-8格式
-          String auth = new String(Base64.getDecoder().decode(authEncode), "UTF-8");
+      Optional<String> optionalAuth = ctx.request().header(Http.HeaderNames.AUTHORIZATION);
+      if (optionalAuth.isPresent()) {
+        String auth = optionalAuth.get();
+        if (auth.startsWith(BASIC)) {
+          // 使用Java8新增的Base64解码器解码
+          byte[] decodeAuth = Base64.getDecoder().decode(auth.replaceFirst(BASIC, ""));
+          // UTF-8格式，事实上也不太需要注意
+          String authorization = new String(decodeAuth, "UTF-8");
           // Basic是通过 username:password 的方式做权限认证
-          String[] authSplit = auth.split(":", 2);
-          Optional<Client> clientOptional = Clients.verify(authSplit[0], authSplit[1]);
-          if (clientOptional.isPresent()) {
-            // 这里返回任何不为null的字符串都行，返回username主要是为了方便查询
-            return clientOptional.get().username;
+          int index = authorization.indexOf(":");
+          if (index != -1) {
+            String username = authorization.substring(0, index);
+            String password = authorization.substring(index + 1);
+            if (Clients.verify(username, password)) {
+              // 这里返回任何不为null的字符串都行，返回username主要是为了方便查询
+              return username;
+            }
           }
         }
       }
@@ -42,6 +50,6 @@ public class ClientAuthenticator extends Security.Authenticator {
   }
 
   @Override public Result onUnauthorized(Http.Context ctx) {
-    return unauthorized(views.html.transfer.render());
+    return unauthorized("关于权限访问的问题，请联系QQ：287431404。");
   }
 }

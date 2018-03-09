@@ -13,15 +13,15 @@ import javax.persistence.Version;
 @MappedSuperclass
 abstract class BaseModel extends Model {
   @Id
-  Long id;
+  public Long id;
   @Version
-  Long version;
+  public Long version;
   @WhenCreated
-  Timestamp created;
+  public Timestamp created;
   @WhenModified
-  Timestamp modified;
+  public Timestamp modified;
 
-  MoreObjects.ToStringHelper baseStringHelper() {
+  public MoreObjects.ToStringHelper baseStringHelper() {
     return MoreObjects.toStringHelper(this)
         .add("id", id)
         .add("version", version)
