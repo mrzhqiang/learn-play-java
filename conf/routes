@@ -9,6 +9,8 @@ GET         /favicon                          controllers.HomeController.favicon
 
 GET         /clients                          controllers.ClientController.getClientList
 
+GET         /login                            controllers.AccountController.login
+
 # Get user by password(just is devece)
 #GET /devices controllers.Cli
 

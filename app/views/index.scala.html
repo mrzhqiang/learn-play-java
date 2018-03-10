@@ -2,4 +2,11 @@
 
 @main("欢迎来到兰达尔！") {
   <h1>欢迎来到兰达尔！</h1>
+  <form action="@routes.AccountController.login()">
+    <input type="hidden" name="name" value="Browser">
+    <input type="hidden" name="name" value="Browser">
+
+  </form>
+  <a href="@routes.AccountController.login()">请登陆</a>
+  或<a href="@routes.AccountController.register()">注册账号</a>
 }

@@ -43,7 +43,7 @@ public class User extends BaseModel {
   public String signature;
   @Column(length = 128)
   public String description;
-
+  
   @Override public int hashCode() {
     return Objects.hash(super.hashCode(), nickname, sex, age, birthday, blood, profession,
         location, school, company, phone, email, signature, description);

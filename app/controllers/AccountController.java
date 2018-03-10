@@ -15,6 +15,10 @@ import utils.Users;
 @Security.Authenticated(ClientAuthenticator.class)
 public class AccountController extends Controller {
 
+  public Result login() {
+    return TODO;
+  }
+
   public Result register() {
     JsonNode jsonNode = request().body().asJson();
     User user = Json.fromJson(jsonNode, User.class);
