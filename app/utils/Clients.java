@@ -1,6 +1,8 @@
 package utils;
 
 import io.ebean.Finder;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.CheckReturnValue;
@@ -13,6 +15,7 @@ public class Clients {
     // no instance
   }
 
+  public static final String BASIC = "Basic ";
   public static final Finder<Long, Client> find = new Finder<>(Client.class);
 
   @Nonnull
@@ -27,6 +30,17 @@ public class Clients {
     client.apikey = generateApikey();
     client.description = description;
     return client;
+  }
+
+  @Nonnull
+  public static String authOf(@Nonnull String name, @Nonnull String apikey) {
+    String auth = name + ":" + apikey;
+    try {
+      auth = new String(Base64.getEncoder().encode(auth.getBytes()), "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      auth = Base64.getEncoder().encodeToString(auth.getBytes());
+    }
+    return BASIC + auth;
   }
 
   @CheckReturnValue

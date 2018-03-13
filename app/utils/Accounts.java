@@ -2,6 +2,8 @@ package utils;
 
 import io.ebean.Finder;
 import java.util.Optional;
+import java.util.regex.Pattern;
+import javax.annotation.Nonnull;
 import models.Account;
 import models.User;
 
@@ -24,6 +26,15 @@ public class Accounts {
     account.level = 1;
     account.user = user;
     return account;
+  }
+
+  /** 验证账号密码是否存在 */
+  public static boolean verify(@Nonnull String number, @Nonnull String password) {
+    Optional<Account> accountOptional = find.query().where()
+        .eq("number", number)
+        .eq("password", password)
+        .findOneOrEmpty();
+    return accountOptional.isPresent();
   }
 
   /** 确保自动生成的账号具有唯一性 */

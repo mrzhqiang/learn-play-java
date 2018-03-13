@@ -6,6 +6,8 @@ import play.mvc.Http;
 import play.mvc.Result;
 import utils.Clients;
 
+import static utils.Clients.BASIC;
+
 /**
  * 客户端权限校验器。
  * <p>
@@ -14,7 +16,6 @@ import utils.Clients;
  * @author mrZQ
  */
 public class ClientAuthenticator extends UserAuthenticator {
-  private static final String BASIC = "Basic ";
 
   @Override public String getUsername(Http.Context ctx) {
     // 首先尝试一下用户权限，如果通过，那么直接通过

@@ -2,22 +2,18 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# home
+# Website
 GET         /                                 controllers.HomeController.index
-# test and will delete
-GET         /favicon                          controllers.HomeController.favicon
 
-GET         /clients                          controllers.ClientController.getClientList
+GET         /account/login                    controllers.AccountController.login
+POST        /account/login                    controllers.AccountController.loginAccount
 
-GET         /login                            controllers.AccountController.login
+GET         /account/register                 controllers.AccountController.register
+POST        /account/register                 controllers.AccountController.registerAccount
 
-# Get user by password(just is devece)
-#GET /devices controllers.Cli
-
-# Test Database
+# Account, Login and Register
 GET         /accounts                         controllers.AccountController.accountList
 
-POST        /account/register                 controllers.AccountController.register
 
 # Test custom routes and controller method
 GET         /action/request                   controllers.ActionController.req

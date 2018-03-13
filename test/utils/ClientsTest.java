@@ -1,5 +1,7 @@
 package utils;
 
+import models.Client;
+import org.junit.Assert;
 import org.junit.Test;
 import play.Application;
 import play.inject.guice.GuiceApplicationBuilder;
@@ -13,6 +15,10 @@ public class ClientsTest extends WithApplication {
 
   @Test
   public void testClient() {
-    System.out.println(Clients.of("Browser", "这是浏览器通用的客户端API Key。"));
+    Client browserClient = Clients.of("Browser", "浏览器通用的客户端API Key。");
+    Client androidClient = Clients.of("Android", "安卓手机通用的客户端API Key。");
+    System.out.println(browserClient);
+    System.out.println(androidClient);
+    Assert.assertNotEquals(browserClient, androidClient);
   }
 }
