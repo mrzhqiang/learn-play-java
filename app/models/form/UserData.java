@@ -2,7 +2,6 @@ package models.form;
 
 import java.util.Date;
 import java.util.Optional;
-import models.User;
 
 public class UserData {
 

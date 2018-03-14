@@ -52,9 +52,13 @@ public class AccountController extends Controller {
 
     UserData userData = userForm.get();
 
+    Optional<String> optionalError = userData.checkError();
+    if (optionalError.isPresent()) {
+      return badRequest(views.html.register.render(userForm, optionalError));
+    }
 
-
-    return ok(views.html.register.render(userForm, Optional.empty()));
+    // TODO 通过用户资料，创建账户，并登陆
+    return ok("注册成功！");
   }
 
   @Security.Authenticated(UserAuthenticator.class)

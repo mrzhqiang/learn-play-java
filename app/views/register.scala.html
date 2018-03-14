@@ -20,6 +20,7 @@
             <div class="row">
               <div class="col-lg-6">
               @helper.form(routes.AccountController.registerAccount()) {
+                @helper.CSRF.formField
                 <div class="form-group input-group">
                   <span class="input-group-addon">昵称</span>
                   <input type="text" class="form-control" name="nickname" placeholder="必填，最长不超过16个字符" maxlength="16">
