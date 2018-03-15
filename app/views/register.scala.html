@@ -1,4 +1,4 @@
-@import models.form.UserData
+@import models.forms.UserData
 @(form: Form[UserData], error: Optional[String])
 
 @main("欢迎注册") {
@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-group input-group">
                   <span class="input-group-addon">E-mail</span>
-                  <input type="email" class="form-control" name="email" placeholder="可选，邮箱格式" maxlength="11">
+                  <input type="email" class="form-control" name="email" placeholder="可选，邮箱格式" maxlength="64">
                 </div>
                 <div class="form-group">
                   <label>

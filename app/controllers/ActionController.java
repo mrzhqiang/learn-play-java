@@ -1,7 +1,7 @@
 package controllers;
 
-import actions.PassArgAction;
-import annotations.VerboseAnnotation;
+import controllers.actions.PassArgAction;
+import controllers.annotations.VerboseAnnotation;
 import java.io.File;
 import java.security.SecureRandom;
 import java.util.Random;

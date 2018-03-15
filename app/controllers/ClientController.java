@@ -1,12 +1,12 @@
 package controllers;
 
-import authentions.ClientAuthenticator;
+import controllers.authentions.ClientAuthenticator;
 import java.util.List;
 import models.Client;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import utils.Clients;
+import models.utils.Clients;
 
 @Security.Authenticated(ClientAuthenticator.class)
 public class ClientController extends Controller {

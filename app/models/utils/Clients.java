@@ -1,7 +1,6 @@
-package utils;
+package models.utils;
 
 import io.ebean.Finder;
-import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,7 +14,8 @@ public class Clients {
     // no instance
   }
 
-  public static final String BASIC = "Basic ";
+  private static final String BASIC = "Basic ";
+
   public static final Finder<Long, Client> find = new Finder<>(Client.class);
 
   @Nonnull
@@ -29,29 +29,41 @@ public class Clients {
     client.name = name;
     client.apikey = generateApikey();
     client.description = description;
+    client.save();
     return client;
   }
 
-  @Nonnull
-  public static String authOf(@Nonnull String name, @Nonnull String apikey) {
-    String auth = name + ":" + apikey;
-    try {
-      auth = new String(Base64.getEncoder().encode(auth.getBytes()), "UTF-8");
-    } catch (UnsupportedEncodingException e) {
-      auth = Base64.getEncoder().encodeToString(auth.getBytes());
+  @CheckReturnValue
+  public static Optional<String> authenticate(@Nonnull String basicAuth) {
+    if (basicAuth.startsWith(BASIC)) {
+      String authorization =
+          new String(Base64.getDecoder().decode(basicAuth.replaceFirst(BASIC, "")));
+      int index = authorization.indexOf(":");
+      if (index != -1) {
+        String username = authorization.substring(0, index);
+        String password = authorization.substring(index + 1);
+        if (verify(username, password)) {
+          return Optional.of(username);
+        }
+      }
     }
-    return BASIC + auth;
+    return Optional.empty();
   }
 
   @CheckReturnValue
-  public static boolean verify(@Nonnull String username, @Nonnull String password) {
-    Optional<Client> optionalClient = find.query().where()
-        .eq("name", username)
-        .eq("apikey", password)
+  private static boolean verify(@Nonnull String name, @Nonnull String apikey) {
+    if (name.isEmpty() || apikey.isEmpty()) {
+      return false;
+    }
+
+    Optional<Client> optional = find.query().where()
+        .eq("name", name)
+        .eq("apikey", apikey)
         .findOneOrEmpty();
-    return optionalClient.isPresent();
+    return optional.isPresent();
   }
 
+  @Nonnull
   private static UUID generateApikey() {
     UUID randomUUID = UUID.randomUUID();
     Optional<Client> optionalClient =

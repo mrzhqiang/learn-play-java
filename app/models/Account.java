@@ -5,8 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import play.data.validation.Constraints;
-import utils.Accounts;
 
 @Entity
 @Table(name = "account")
@@ -45,7 +43,6 @@ public class Account extends BaseModel {
   @Override public String toString() {
     return baseStringHelper()
         .add("number", number)
-        .add("password", password)
         .add("level", level)
         .add("user", user)
         .toString();

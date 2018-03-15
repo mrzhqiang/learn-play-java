@@ -1,9 +1,10 @@
-package utils;
+package models.utils;
 
 import io.ebean.Finder;
 import java.util.Optional;
-import java.util.regex.Pattern;
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import models.Account;
 import models.User;
 
@@ -17,27 +18,29 @@ public class Accounts {
 
   public static final Finder<Long, Account> find = new Finder<>(Account.class);
 
-  /** 通过新用户资料申请账户 */
-  public static Account of(User user) {
+  @Nonnull
+  @CheckReturnValue
+  public static Account of(@Nonnull User user) {
     Account account = new Account();
     int minLength = Math.max(MIN_LENGTH, user.hashCode() & 0xF);
     account.number = numberOf(minLength);
     account.password = RandomUtil.stringOf(minLength, MAX_LENGTH);
     account.level = 1;
     account.user = user;
+    account.save();
     return account;
   }
 
-  /** 验证账号密码是否存在 */
-  public static boolean verify(@Nonnull String number, @Nonnull String password) {
+  @Nullable
+  @CheckReturnValue
+  public static Account of(@Nonnull String number, @Nonnull String password) {
     Optional<Account> accountOptional = find.query().where()
         .eq("number", number)
         .eq("password", password)
         .findOneOrEmpty();
-    return accountOptional.isPresent();
+    return accountOptional.orElse(null);
   }
 
-  /** 确保自动生成的账号具有唯一性 */
   private static String numberOf(int minLength) {
     String number = RandomUtil.numberOf(minLength, MAX_LENGTH);
     Optional<Account> accountOptional =

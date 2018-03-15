@@ -1,12 +1,12 @@
-package utils;
+package models.utils;
 
 import io.ebean.Finder;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import models.Account;
 import models.Token;
 
@@ -18,6 +18,7 @@ public class Tokens {
     // no instance
   }
 
+  private static final String BEARER = "Bearer ";
   // 这里由于Token只给APP使用，所以默认的过期时间是30天
   private static final long TOKEN_EXPIRES_IN = TimeUnit.DAYS.toSeconds(30);
   // 这部分参考的是 https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
@@ -27,6 +28,7 @@ public class Tokens {
   public static final Finder<Long, Token> find = new Finder<>(Token.class);
 
   @Nonnull
+  @CheckReturnValue
   public static Token of(@Nonnull Account account) {
     Token token = new Token();
     token.accessToken = generateAccessToken();
@@ -37,27 +39,45 @@ public class Tokens {
     return token;
   }
 
-  @Nullable
+  @CheckReturnValue
   public static Optional<Token> of(@Nonnull String refreshToken) {
     Optional<Token> optionalToken =
         find.query().where().eq(REFRESH_TOKEN, refreshToken).findOneOrEmpty();
     if (optionalToken.isPresent()) {
       Token token = optionalToken.get();
       token.accessToken = generateAccessToken();
-      token.modified = new Timestamp(System.currentTimeMillis());
-      token.save();
+      token.refreshToken = generateRefreshToken();
+      token.expiresIn = TOKEN_EXPIRES_IN;
+      token.modified = Timestamp.from(Instant.now());
       return Optional.of(token);
     }
     return Optional.empty();
   }
 
   @CheckReturnValue
-  public static boolean verify(@Nonnull String accessToken) {
-    Optional<Token> optionalToken =
-        find.query().where().eq(ACCESS_TOKEN, accessToken).findOneOrEmpty();
+  public static Optional<String> authenticate(@Nonnull String bearerAuth) {
+    if (bearerAuth.startsWith(BEARER)) {
+      String accessToken = bearerAuth.replaceFirst(BEARER, "");
+      if (verify(accessToken)) {
+        return Optional.of(accessToken);
+      }
+    }
+    return Optional.empty();
+  }
+
+  @CheckReturnValue
+  private static boolean verify(@Nonnull String accessToken) {
+    if (accessToken.isEmpty()) {
+      return false;
+    }
+
+    Optional<Token> optionalToken = find.query().where()
+        .eq(ACCESS_TOKEN, accessToken)
+        .findOneOrEmpty();
     return optionalToken.isPresent();
   }
 
+  @Nonnull
   private static String generateAccessToken() {
     String accessToken = RandomUtil.stringOf(O_AUTH_ACCESS_TOKEN_LENGTH);
     Optional<Token> optionalToken =
@@ -68,6 +88,7 @@ public class Tokens {
     return accessToken;
   }
 
+  @Nonnull
   private static String generateRefreshToken() {
     String refreshToken = RandomUtil.stringOf(O_AUTH_REFRESH_TOKEN_LENGTH);
     Optional<Token> optionalToken =

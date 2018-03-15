@@ -1,18 +1,22 @@
 package controllers;
 
-import authentions.UserAuthenticator;
+import controllers.authentions.TokenAuthenticator;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
+import models.Account;
+import models.Token;
 import models.User;
-import models.form.AccountData;
-import models.form.UserData;
+import models.forms.AccountData;
+import models.forms.UserData;
+import models.utils.Accounts;
+import models.utils.Tokens;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import utils.Users;
+import models.utils.Users;
 
 public class AccountController extends Controller {
 
@@ -36,8 +40,16 @@ public class AccountController extends Controller {
 
     Optional<String> error = accountData.checkError();
     if (error.isPresent()) {
-      return badRequest(views.html.login.render(this.accountForm, error));
+      return badRequest(views.html.login.render(accountForm, error));
     }
+
+    Account account = Accounts.of(accountData.getNumber(), accountData.getPassword());
+    if (account == null) {
+      return badRequest(views.html.login.render(accountForm, Optional.of("登陆失败，账号或密码错误！")));
+    }
+
+    Token token = Tokens.of(account);
+    session().put("token", token.accessToken);
 
     // TODO 聊天界面或账户中心
     return ok("登陆成功！");
@@ -52,16 +64,25 @@ public class AccountController extends Controller {
 
     UserData userData = userForm.get();
 
-    Optional<String> optionalError = userData.checkError();
-    if (optionalError.isPresent()) {
-      return badRequest(views.html.register.render(userForm, optionalError));
+    Optional<String> error = userData.checkError();
+    if (error.isPresent()) {
+      return badRequest(views.html.register.render(userForm, error));
     }
 
-    // TODO 通过用户资料，创建账户，并登陆
-    return ok("注册成功！");
+    User user = userData.toUser();
+    user.save();
+
+    Account account = Accounts.of(user);
+
+    Token token = Tokens.of(account);
+    token.save();
+    session().put("token", token.accessToken);
+
+    // TODO 聊天界面或账户中心
+    return ok("注册成功！QQ号：" + account.number + ", 密码：" + account.password);
   }
 
-  @Security.Authenticated(UserAuthenticator.class)
+  @Security.Authenticated(TokenAuthenticator.class)
   public Result accountList() {
     List<User> result = Users.find.all();
     return ok("Add successful: " + result);

@@ -1,4 +1,4 @@
-package utils;
+package models.utils;
 
 import io.ebean.Finder;
 import models.User;

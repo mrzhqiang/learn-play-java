@@ -1,6 +1,6 @@
-package actions;
+package controllers.actions;
 
-import annotations.VerboseAnnotation;
+import controllers.annotations.VerboseAnnotation;
 import java.util.concurrent.CompletionStage;
 import play.Logger;
 import play.mvc.Action;

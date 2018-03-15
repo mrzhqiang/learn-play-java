@@ -1,4 +1,4 @@
-package utils;
+package models.utils;
 
 import java.security.SecureRandom;
 import java.util.Locale;
@@ -42,7 +42,7 @@ public class RandomUtil {
       String chars = NUMBER;
       if (i == 0) {
         // 首个数字字符为0则没有意义
-        chars = NUMBER.replaceAll(NUMBER, "0");
+        chars = NUMBER.replace("0", "");
       }
       builder.append(chars.charAt(RANDOM.nextInt(chars.length())));
     }

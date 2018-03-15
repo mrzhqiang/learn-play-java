@@ -11,8 +11,14 @@ POST        /account/login                    controllers.AccountController.logi
 GET         /account/register                 controllers.AccountController.register
 POST        /account/register                 controllers.AccountController.registerAccount
 
+GET         /room                             controllers.ChatController.room
+GET         /chat                             controllers.ChatController.chat
+
 # Account, Login and Register
 GET         /accounts                         controllers.AccountController.accountList
+
+# Error list
+GET         /error/:id                        controllers.ErrorController.showByCode(id:Int)
 
 
 # Test custom routes and controller method

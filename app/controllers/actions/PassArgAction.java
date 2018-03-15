@@ -1,4 +1,4 @@
-package actions;
+package controllers.actions;
 
 import java.util.concurrent.CompletionStage;
 import play.mvc.Action;

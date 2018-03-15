@@ -1,4 +1,4 @@
-package utils;
+package models.utils;
 
 import models.Client;
 import org.junit.Assert;

@@ -1,6 +1,6 @@
-package annotations;
+package controllers.annotations;
 
-import actions.VerboseAnnotationAction;
+import controllers.actions.VerboseAnnotationAction;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
