@@ -58,23 +58,20 @@ public class Tokens {
   public static Optional<String> authenticate(@Nonnull String bearerAuth) {
     if (bearerAuth.startsWith(BEARER)) {
       String accessToken = bearerAuth.replaceFirst(BEARER, "");
-      if (verify(accessToken)) {
+      Optional<Token> verify = verify(accessToken);
+      if (verify.isPresent() && verify.get().isExpires()) {
         return Optional.of(accessToken);
       }
     }
     return Optional.empty();
   }
 
+  @Nonnull
   @CheckReturnValue
-  private static boolean verify(@Nonnull String accessToken) {
-    if (accessToken.isEmpty()) {
-      return false;
-    }
-
-    Optional<Token> optionalToken = find.query().where()
+  public static Optional<Token> verify(@Nonnull String accessToken) {
+    return find.query().where()
         .eq(ACCESS_TOKEN, accessToken)
         .findOneOrEmpty();
-    return optionalToken.isPresent();
   }
 
   @Nonnull

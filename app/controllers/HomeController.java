@@ -1,5 +1,9 @@
 package controllers;
 
+import java.util.Optional;
+import models.Account;
+import models.Token;
+import models.utils.Tokens;
 import play.mvc.*;
 
 /**
@@ -9,11 +13,15 @@ import play.mvc.*;
  */
 public class HomeController extends Controller {
 
-  /**
-   * 主页，通常是以 index 命名，这样通过浏览器访问域名时，会自动加载这个页面。
-   */
   public Result index() {
-    // 在 Play 的views包下，有一堆html文件，可以通过下面这样的方式来引用。
+    String accessToken = session("token");
+    if (accessToken != null && !accessToken.isEmpty()) {
+      Optional<Token> verify = Tokens.verify(accessToken);
+      if (verify.isPresent()) {
+        Account account = verify.get().account;
+        return ok(views.html.user.render(account.user));
+      }
+    }
     return ok(views.html.index.render());
   }
 }
