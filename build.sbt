@@ -13,4 +13,5 @@ libraryDependencies ++= Seq(
   ehcache,
   jcache,
   ws,
+  "redis.clients" % "jedis" % "2.8.1",
 )
