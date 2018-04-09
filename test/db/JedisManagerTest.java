@@ -1,4 +1,4 @@
-package db.util;
+package db;
 
 import db.JedisManager;
 import org.junit.Test;

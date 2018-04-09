@@ -14,4 +14,6 @@ libraryDependencies ++= Seq(
   jcache,
   ws,
   "redis.clients" % "jedis" % "2.8.1",
+  "com.datastax.cassandra" % "cassandra-driver-core" % "3.1.0",
+  "com.datastax.cassandra" % "cassandra-driver-mapping" % "3.1.0",
 )
