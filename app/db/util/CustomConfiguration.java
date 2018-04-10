@@ -14,7 +14,7 @@ public final class CustomConfiguration {
     // no instance
   }
 
-  private final static File file = new File("./conf/application.conf");
+  private final static File file = new File("./conf/custom.conf");
 
   @Nonnull
   public static Properties readProperties() {
