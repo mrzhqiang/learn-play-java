@@ -11,3 +11,5 @@ target
 out
 /.g8
 /.gradle
+sbt-dist
+gradle
